@@ -1,0 +1,103 @@
+Virtual Machines
+
+	#Creating Virtual Machines
+
+	Objective 
+
+	In this lab, you explore the available options for VMs and see the differences between locations.
+
+	In this lab, you learn how to perform the following tasks:
+
+		#Create several standard VMs.
+
+		#Create advanced VMs.
+
+	Note: Kindly sign on into your Google GCP account with your valid credentials to perform the below task
+
+	Task One: 
+
+		Create a utility virtual machine
+
+			Step 1: The below command display the list of Zones available in regions us-central1 
+
+				gcloud compute zones list | grep us-central1
+			
+			Step 2:The below command aid to config/select us-central-b as the preferred zone, please note, you can pick any zone of 	   your choice in place of us-central1-c (such as us-central1-a or us-central1-b).
+
+				gcloud config set compute/zone us-central1-c
+
+			Step 3: The command below create a VM instance  with machine type "n1-standard-1" image-project "debian-cloud" image"debain-9-stretch-v20190213" with no external ip address . (-address "no address").
+
+				gcloud compute create instance $INSTANCE_NAME  --no-address --zone=us-central1-c --machine-type=n1-standard-1 --no-address --subnet=default
+
+		Explore the VM details
+
+			Step 1: Display the list of Vm available on your acccount
+
+				gcloud compute instances list
+
+			Step 2: This command show you the details of the $INSTANCE_NAME VM
+
+					gcloud compute instances describe $INSTANCE_NAME
+		
+		Explore the VM logs
+
+			Step 1: On the VM instance details page for your VM, click Stackdriver Logging.
+			
+			Step 2:Click the small triangle to the left of one of the lines to see the kind of information it contains.
+			On the far right, click View Options > Expand All.
+
+	Task Two:
+
+		Create a Windows virtual machine
+
+		Step 1: List the available zones in europe-west2 region
+
+				gcloud compute zones list | grep europe-west2
+
+		Step 2: select europe-west2-a 
+
+				gcloud config set compute/zone europe-west2-a
+
+		Step 3: Create a VM instance 
+
+			gcloud compute instances create $INSTANCE_NAME -–machine-type=n1-standard-2 --boot-disk-type=pd-standard --image-project= windows-cloud --boot-disk-size=100 --image=windows-server-2016-core --tags=http-server,https-server;
+
+			gcloud compute firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+
+			gcloud compute --project=qwiklabs-gcp-03-870c9236b05f firewall-rules create default-allow-https --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:443 --source-ranges=0.0.0.0/0 --target-tags=https-server
+
+		Step 4: Set a password
+
+				Step 1:
+
+				Click on the name of your Windows VM to access the VM instance details.
+				You don't have a valid password for this Windows VM: you cannot log in to the Windows VM without a password. 
+
+				Step 2:
+				Click Set Windows password.
+				
+				Step 3:
+				Click Set.
+				Copy the provided password, and click CLOSE.
+
+	Task Three:
+
+		Create a custom virtual machine
+
+		Step1: Run the below command , which create a custom VM with  machine type (6vCpus with 32GB memmory)  					   allocated.
+
+			gcloud compute instances create $INSTANCE_NAME --zone=us-west1-b --subnet=default --machine-type=custom-6-32768 --boot-disk-size=200--boot-disk-type=pd-standard
+
+
+
+
+
+
+
+
+
+
+
+
+	Working with Virtual Machines
